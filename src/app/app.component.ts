@@ -1,16 +1,16 @@
-import {Component, Injectable, Input, OnInit} from '@angular/core';
-import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { Component, Injectable, Input, OnInit } from '@angular/core';
+import { NgClass, NgForOf, NgIf } from "@angular/common";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @Injectable()
 class MessageService {
   messages: Message[] = [];
 
   async all() {
-      const res = await fetch('http://127.0.0.1:4010/messages')
-      const data = await res.json();
+    const res = await fetch('http://127.0.0.1:4010/messages')
+    const data = await res.json();
 
-      this.messages = data.messages.map((message: any) => new Message(message.text, message.status));
+    this.messages = data.messages.map((message: any) => new Message(message.text, message.status));
   }
 
   async add(message: Message) {
@@ -69,17 +69,17 @@ class MessageComponent {
 })
 class ChatComponent implements OnInit {
   messages: Message[] = [];
-    constructor(
-        private messageService: MessageService
-    ) {
+  constructor(
+    private messageService: MessageService
+  ) {
 
-    }
+  }
 
-    async ngOnInit() {
-      // @ts-ignore
-      await this.messageService.all();
-      this.messages = this.messageService.messages;
-    }
+  async ngOnInit() {
+    // @ts-ignore
+    await this.messageService.all();
+    this.messages = this.messageService.messages;
+  }
 }
 
 @Component({
@@ -121,14 +121,18 @@ class CreateMessageComponent {
   }
 
   async onSubmit() {
-      this.message.status = 'pending';
-      const res = await fetch('http://127.0.0.1:4010/messages/send', {
-        method: 'GET',
-        body: JSON.stringify({text: this.message.text}),
-      });
-      res.status === 204 ? this.message.status = 'sent' : this.message.status = 'failed';
-      await this.messageService.add(this.message);
-      this.message = new Message('', 'draft');
+    this.message.status = 'pending';
+    const res = await fetch('http://127.0.0.1:4010/messages/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ text: this.message.text }),
+    });
+
+    res.status === 204 ? this.message.status = 'sent' : this.message.status = 'failed';
+    await this.messageService.add(this.message);
+    this.message = new Message('', 'draft');
   }
 }
 
@@ -136,8 +140,8 @@ class CreateMessageComponent {
   selector: 'app-root',
   standalone: true,
   imports: [
-      ChatComponent,
-      CreateMessageComponent
+    ChatComponent,
+    CreateMessageComponent
   ],
   template: `
     <div class="max-w-md mx-auto">
