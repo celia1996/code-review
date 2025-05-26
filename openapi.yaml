@@ -2,6 +2,7 @@ openapi: 3.0.0
 info:
   title: Messages API
   version: 1.0.0
+
 paths:
   /messages:
     get:
@@ -13,19 +14,18 @@ paths:
           content:
             application/json:
               schema:
-                type: "object"
+                type: object
                 properties:
                   messages:
-                    type: "array"
+                    type: array
                     items:
-                      type: "object"
+                      type: object
                       properties:
                         text:
-                          type: "string"
+                          type: string
                         status:
-                          type: "string"
-                          enum:
-                            - "sent"
+                          type: string
+                          enum: [sent]
               example:
                 messages:
                   - text: "Hello, World!"
@@ -34,17 +34,20 @@ paths:
                     status: "sent"
                   - text: "Thanks, I'm fine. How about you?"
                     status: "sent"
+
   /messages/send:
-    get:
+    post:
       summary: Send a Message
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: "object"
+              type: object
+              required: [text]
               properties:
                 text:
-                  type: "string"
+                  type: string
       responses:
         '204':
           description: Successfully sent
