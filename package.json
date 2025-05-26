@@ -28,6 +28,8 @@
     "@angular/cli": "^17.1.2",
     "@angular/compiler-cli": "^17.1.0",
     "@testing-library/angular": "^17.3.7",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/user-event": "^14.6.1",
     "@types/jasmine": "~5.1.0",
     "autoprefixer": "^10.4.21",
     "jasmine-core": "~5.1.0",
