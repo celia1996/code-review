@@ -54,7 +54,6 @@ class MessageComponent {
 @Component({
   selector: 'app-chat',
   standalone: true,
-  providers: [MessageService],
   imports: [
     NgForOf,
     MessageComponent
@@ -85,7 +84,6 @@ class ChatComponent implements OnInit {
 @Component({
   selector: 'app-create-message',
   standalone: true,
-  providers: [MessageService],
   imports: [
     ReactiveFormsModule,
     FormsModule,
@@ -139,6 +137,7 @@ class CreateMessageComponent {
 @Component({
   selector: 'app-root',
   standalone: true,
+  providers: [MessageService],
   imports: [
     ChatComponent,
     CreateMessageComponent
