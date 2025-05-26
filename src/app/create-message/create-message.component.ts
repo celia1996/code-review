@@ -17,20 +17,30 @@ import { MessageService } from '../services/message.service';
   ],
   template: `
     <div *ngIf="!message.empty()">
-      <app-message [message]="message" no="preview"></app-message>
-    </div>
-    <form (ngSubmit)="onSubmit()">
-      <label class="mt-4">
-        <div>Write Message</div>
-        <textarea class="block w-full" required name="text" [(ngModel)]="message.text"></textarea>
-      </label>
+    <app-message [message]="message" no="preview"></app-message>
+  </div>
 
-      <button type="submit"
-          [disabled]="message.status === 'pending'"
-          class="pointer bg-blue-400 py-2 px-4 mt-2 w-full"
-          [ngClass]="{'bg-gray-400': message.status === 'pending'}"
-      >Send</button>
-    </form>
+  <form (ngSubmit)="onSubmit()">
+    <label class="form-label" for="text">Write Message</label>
+    <textarea
+      id="text"
+      name="text"
+      required
+      [(ngModel)]="message.text"
+      class="form-textarea"
+    ></textarea>
+
+    <button
+      type="submit"
+      [disabled]="message.status === 'pending'"
+      [ngClass]="{
+        'btn-primary': message.status !== 'pending',
+        'btn-disabled': message.status === 'pending'
+      }"
+    >
+      Send
+    </button>
+  </form>
   `
 })
 export class CreateMessageComponent {

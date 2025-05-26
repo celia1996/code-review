@@ -5,12 +5,19 @@ import { NgClass } from '@angular/common';
   selector: 'app-message',
   standalone: true,
   template: `
-    <div style="background-color: #fff;">
-      <span class="bg-slate-400" class="block bg-slate-200 text-slate-500">#{{no}} - {{ message.status }}</span>
-      <div class="p-2" [ngClass]="{'text-slate-500': message.status === 'draft'}">
-        {{message.text}}
-      </div>
-    </div>
+<div class="message-card">
+  <span class="message-header">#{{ no }} - {{ message.status }}</span>
+  <div
+    [ngClass]="{
+      'message-text--sent': message.status === 'sent',
+      'message-text--draft': message.status === 'draft',
+      'message-text--pending': message.status === 'pending',
+      'message-text--failed': message.status === 'failed'
+    }"
+  >
+    {{ message.text }}
+  </div>
+</div>
   `,
   imports: [NgClass]
 })
