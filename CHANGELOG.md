@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased] – 2025-05-28
+## [1.0.0] – 2025-05-28
 
 ### Added
 - Reusable utility classes for buttons, forms and message cards to centralize styling logic and prepare for a future design system.
