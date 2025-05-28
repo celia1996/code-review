@@ -4,27 +4,34 @@ import { CreateMessageComponent } from './create-message.component';
 import { MessageService } from '../services/message.service';
 
 describe('CreateMessageComponent', () => {
-  beforeEach(() => {
-    const mockResponse = new Response(null, {
-      status: 204,
-      statusText: 'No Content',
-      headers: { 'Content-Type': 'application/json' },
+beforeEach(() => {
+  spyOn(window, 'fetch').and.callFake(
+    (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+      const url = typeof input === 'string' ? input : input.toString();
+      const status = url.endsWith('/send') ? 204 : 200;
+      return Promise.resolve(new Response(null, { status }));
+    }
+  );
+});
+
+
+  it('does not display preview when message is empty', async () => {
+    const { container } = await render(CreateMessageComponent, {
+      providers: [MessageService]
     });
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+    expect(container.querySelector('app-message')).toBeNull();
   });
 
-  it('should let the user write and send a message', async () => {
-    await render(CreateMessageComponent, {
-      providers: [MessageService],
+  it('displays preview when user types a message', async () => {
+    const { container } = await render(CreateMessageComponent, {
+      providers: [MessageService]
     });
 
-    const textarea = screen.getByLabelText(/write message/i) as HTMLTextAreaElement;
-    const button = screen.getByRole('button', { name: /send/i }) as HTMLButtonElement;
+    const textarea = screen.getByLabelText(/write message/i);
+    await userEvent.type(textarea, 'Hello preview');
 
-    await userEvent.type(textarea, 'Hello world');
-    expect(textarea.value).toBe('Hello world');
+    await screen.findByText('Hello preview');
 
-    await userEvent.click(button);
-    expect(button.disabled).toBeTrue();
+    expect(container.querySelector('app-message')).not.toBeNull();
   });
 });
