@@ -12,17 +12,18 @@ import { MessageService } from '../services/message.service';
     MessageComponent
   ],
   template: `
-    <div>
-      <div *ngFor="let message of messages; index as i;">
-        <app-message [message]="message" [no]="i"></app-message>
-      </div>
-    </div>
+      <app-message
+        *ngFor="let message of messages; index as i"
+        [message]="message"
+        [no]="i"
+      >
+      </app-message>
   `,
 })
 export class ChatComponent implements OnInit {
   messages: Message[] = [];
 
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService) { }
 
   async ngOnInit() {
     await this.messageService.all();

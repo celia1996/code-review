@@ -13,7 +13,9 @@ import { MessageService } from './services/message.service';
   ],
   template: `
     <div class="max-w-md mx-auto">
-      <h1 class="text-2xl my-8">{{ title }}</h1>
+      <h1 class="title-h1">
+        {{title}}
+      </h1>
       <app-chat></app-chat>
       <app-create-message></app-create-message>
     </div>
